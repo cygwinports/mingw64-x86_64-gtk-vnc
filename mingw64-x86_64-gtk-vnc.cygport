@@ -1,0 +1,72 @@
+CROSS_HOST="x86_64-w64-mingw32"
+ORIG_PN="gtk-vnc"
+inherit cross gnome2
+
+NAME="mingw64-x86_64-gtk-vnc"
+VERSION=0.5.3
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="GTK+ VNC viewer widget for Win64 toolchain"
+DESCRIPTION="gtk-vnc is a VNC viewer widget for GTK. It is built using
+coroutines allowing it to be completely asynchronous while remaining
+single threaded. It provides a core C library, and bindings for Python
+(PyGTK), GObject Introspection, and Vala."
+HOMEPAGE="http://gtk-vnc.sourceforge.net/"
+
+PATCH_URI="0.5.0-autoconf.patch"
+
+DEPEND="gnome-common
+	pkgconfig(gnutls)
+	pkgconfig(gtk+-2.0)
+	pkgconfig(gtk+-3.0)
+	pkgconfig(zlib)
+	vala(gtk+-2.0)
+	vala(gtk+-3.0)"
+
+PKG_NAMES="mingw64-x86_64-gvnc1.0 ${NAME}1.0 ${NAME}2.0"
+mingw64_x86_64_gtk_vnc1_0_SUMMARY="GTK+2 VNC viewer widget for Win64 toolchain"
+mingw64_x86_64_gtk_vnc1_0_CONTENTS="${CROSS_BINDIR#/}/libgtk-vnc-1.0-0.dll
+	${CROSS_INCLUDEDIR#/}/gtk-vnc-1.0/ ${CROSS_LIBDIR#/}/libgtk-vnc-1.0.*
+	${CROSS_LIBDIR#/}/pkgconfig/gtk-vnc-1.0.pc"
+mingw64_x86_64_gtk_vnc2_0_SUMMARY="GTK+3 VNC viewer widget for Win64 toolchain"
+mingw64_x86_64_gtk_vnc2_0_CONTENTS="${CROSS_BINDIR#/}/libgtk-vnc-2.0-0.dll
+	${CROSS_INCLUDEDIR#/}/gtk-vnc-2.0/ ${CROSS_LIBDIR#/}/libgtk-vnc-2.0.*
+	${CROSS_LIBDIR#/}/pkgconfig/gtk-vnc-2.0.pc"
+mingw64_x86_64_gvnc1_0_SUMMARY="GObject VNC library for Win64 toolchain"
+mingw64_x86_64_gvnc1_0_CONTENTS="${CROSS_BINDIR#/}/libgvnc*-1.0-0.dll
+	${CROSS_INCLUDEDIR#/}/gvnc*-1.0/ ${CROSS_LIBDIR#/}/libgvnc*-1.0.*
+	${CROSS_LIBDIR#/}/pkgconfig/gvnc*-1.0.pc ${CROSS_DATADIR#/}/locale
+	usr/share/doc/"
+PKG_IGNORE="${CROSS_BINDIR#/}/gvnccapture.exe ${CROSS_DATADIR#/}/man/man1/"
+
+DIFF_EXCLUDES="config.hin"
+DISTCLEANFILES="src/*enums.*"
+
+CYGCONF_ARGS="
+	--disable-plugin
+	--disable-vala
+	--with-coroutine=gthread
+	--without-examples --without-libview
+	--without-python
+	--without-sasl
+"
+
+src_compile() {
+	cd ${S}
+	gnome2_autoreconf
+
+	mkdir -p ${B}/gtk2
+	cd ${B}/gtk2
+	gnome2_compile --with-gtk=2.0
+
+	mkdir -p ${B}/gtk3
+	cd ${B}/gtk3
+	gnome2_compile --with-gtk=3.0
+}
+
+src_install() {
+	cd ${B}/gtk2
+	cyginstall
+	cd ${B}/gtk3
+	cyginstall
+}
