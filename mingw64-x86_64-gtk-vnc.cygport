@@ -3,7 +3,7 @@ ORIG_PN="gtk-vnc"
 inherit cross gnome2
 
 NAME="mingw64-x86_64-gtk-vnc"
-VERSION=0.5.3
+VERSION=0.5.4
 RELEASE=1
 CATEGORY="Devel"
 SUMMARY="GTK+ VNC viewer widget for Win64 toolchain"
