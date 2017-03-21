@@ -1,3 +1,11 @@
+--- origsrc/gtk-vnc-0.7.0/Makefile.am	2016-10-26 11:12:27.000000000 -0500
++++ src/gtk-vnc-0.7.0/Makefile.am	2017-03-08 15:28:39.825599800 -0600
+@@ -1,5 +1,4 @@
+ SUBDIRS = src tools examples po vapi
+-ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
+ 
+ pkgconfig_DATA = $(PACKAGE)-$(GTK_VNC_API_VERSION).pc gvnc-1.0.pc
+ pkgconfigdir = $(libdir)/pkgconfig
 --- origsrc/gtk-vnc-0.5.0/configure.ac	2012-05-03 21:02:15.773950400 -0500
 +++ src/gtk-vnc-0.5.0/configure.ac	2012-05-04 14:27:57.516534500 -0500
 @@ -58,17 +58,6 @@ AC_DEFINE_UNQUOTED([VERSION_MAJOR], [$VE
